@@ -57,10 +57,10 @@ MonoBehaviour:
   _barrelNum: 4
   _rouletteBarrelPrefab: {fileID: 114595264427863418, guid: cd8e40d0cbe53437dbc3289a01c69988,
     type: 2}
-  _itemIDList: 6400000065000000660000006700000068000000
+  _itemIDList: 0000000001000000020000000300000004000000
   _explosion: {fileID: 198123743595478536, guid: 24ac10d921b154614b8ba5b282834157,
     type: 2}
-  _correctItem: {fileID: 114618140031798920, guid: 56c2783c9fd7a4c85a4c4dbdaa47ff8a,
+  _correctItem: {fileID: 114907188161382080, guid: 234fa65bea7bd43dd8ed5019131e4da8,
     type: 2}
   _realInterval: 0.5
   _gatherTime: 0.5

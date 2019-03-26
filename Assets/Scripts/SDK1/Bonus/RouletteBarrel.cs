@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
-using DG.Tweening;
 
 public class RouletteBarrel : MonoBehaviour
 {
@@ -21,7 +20,7 @@ public class RouletteBarrel : MonoBehaviour
     private int _id = 0;
 
     // アイテムの種類
-    private List<int> _itemIDList = new List<int>();
+    private List<ItemName.ItemNameList> _itemIDList = new List<ItemName.ItemNameList>();
 
     // アイテムの決定
     private ReactiveProperty<int> _pickItemID = new ReactiveProperty<int>(-1);
@@ -39,7 +38,7 @@ public class RouletteBarrel : MonoBehaviour
 
     private IDisposable _roulettePlayable;
 
-    public void Initialize(int id, List<int> itemIDList, float realInterval)
+    public void Initialize(int id, List<ItemName.ItemNameList> itemIDList, float realInterval)
     {
         _id = id;
         _itemIDList = itemIDList;

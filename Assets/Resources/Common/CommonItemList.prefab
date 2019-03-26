@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4960544908298276}
   - component: {fileID: 114795083264208868}
   m_Layer: 0
-  m_Name: SDK1ItemList
+  m_Name: CommonItemList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,4 +51,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e99ab5c213af4f628fa6712b9c2474e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemList: []
+  _itemList:
+  - {fileID: 21300000, guid: b78c19614018f49d5b2efbca55ef5bae, type: 3}
+  - {fileID: 21300000, guid: cccf5f3e14dee4613bd77ca0083ecaa2, type: 3}
+  - {fileID: 21300000, guid: 009c55924bd4f434aaf633825aa615fb, type: 3}
+  - {fileID: 21300000, guid: 722990d95e7974dc4ae8a2db15c8e88a, type: 3}
+  - {fileID: 21300000, guid: 7d04414a1bad74c2c9123abcba4b7f4f, type: 3}
+  - {fileID: 21300000, guid: da56ac02595714338bb7a135c5a2abf7, type: 3}
+  - {fileID: 21300000, guid: c57933a4bf2ce486db3090e1e7c4b65c, type: 3}
+  - {fileID: 21300000, guid: 7209c06b94fed4e5a94bdaaee594dd10, type: 3}
+  - {fileID: 21300000, guid: 531a63f7e16a6417a88564bdf37056d6, type: 3}

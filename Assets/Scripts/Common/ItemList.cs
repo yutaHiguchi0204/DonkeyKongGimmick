@@ -5,9 +5,9 @@ using UnityEngine;
 public class ItemList : MonoBehaviour
 {
     [SerializeField]
-    private List<Material> _itemList = new List<Material>();
+    private List<Sprite> _itemList = new List<Sprite>();
 
-    public List<Material> Get()
+    public List<Sprite> Get()
     {
         return _itemList;
     }

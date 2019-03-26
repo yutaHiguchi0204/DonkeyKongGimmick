@@ -12,6 +12,7 @@ public static class CommonState
     // アイテム関係
     public static readonly int[] ITEM_ID_START =
     {
+        1,
         100,
         200
     };

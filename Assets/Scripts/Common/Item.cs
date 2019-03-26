@@ -6,6 +6,7 @@ public class Item : MonoBehaviour
 {
     private static readonly string[] ITEM_LIST_PATH = 
     {
+        "Common/CommonItemList",
         "SDK1/SDK1ItemList",
         "SDK2/SDK2ItemList"
     };
@@ -26,11 +27,12 @@ public class Item : MonoBehaviour
 
     public enum SelectItemList
     {
+        Common,
         SDK1,
         SDK2
     }
     [SerializeField]
-    protected SelectItemList _selectItemList = SelectItemList.SDK1;
+    protected SelectItemList _selectItemList = SelectItemList.Common;
     public SelectItemList CurrentSelectItemList
     {
         get
@@ -43,8 +45,8 @@ public class Item : MonoBehaviour
     private ItemList _itemList;
 
     [SerializeField]
-    protected MeshRenderer _itemImage;
-    public MeshRenderer ItemImage
+    protected SpriteRenderer _itemImage;
+    public SpriteRenderer ItemImage
     {
         get
         {
@@ -55,6 +57,12 @@ public class Item : MonoBehaviour
     // 初期化
     public virtual void Initialize()
     {
+        // IDが設定されていなかったらスタート値を設定
+        if (_id == 0)
+        {
+            _id = CommonState.ITEM_ID_START[(int)_selectItemList];
+        }
+
         SetImage();
     }
 
@@ -62,6 +70,6 @@ public class Item : MonoBehaviour
     public virtual void SetImage()
     {
         _itemList = Resources.Load(ITEM_LIST_PATH[(int)_selectItemList], typeof(ItemList)) as ItemList;
-        _itemImage.material = _itemList.Get()[_id - CommonState.ITEM_ID_START[(int)_selectItemList]];
+        _itemImage.sprite = _itemList.Get()[_id - CommonState.ITEM_ID_START[(int)_selectItemList]];
     }
 }

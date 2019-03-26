@@ -28,7 +28,7 @@ public class Roulette : BonusFactory
 
     // アイテムの種類
     [SerializeField]
-    private List<int> _itemIDList = new List<int>();
+    private List<ItemName.ItemNameList> _itemIDList = new List<ItemName.ItemNameList>();
 
     // 選択アイテムのIDリスト
     private ReactiveCollection<int> _pickItemIDList = new ReactiveCollection<int>();
