@@ -48,7 +48,7 @@ public class RouletteBarrel : MonoBehaviour
         _roulettePlayable = Observable.Interval(TimeSpan.FromSeconds(realInterval))
             .Subscribe(time =>
             {
-                _item.ID = ((int)time + _id) % _itemIDList.Count + CommonState.ITEM_ID_START[(int)_item.CurrentSelectItemList];
+                _item.ID = (int)_itemIDList[((int)time + _id) % _itemIDList.Count];
                 _item.SetImage();
             });
     }

@@ -6,6 +6,7 @@ public class ItemName : MonoBehaviour
 {
     public enum ItemNameList
     {
+        None,
         PanelK = 1,
         PanelO,
         PanelN,

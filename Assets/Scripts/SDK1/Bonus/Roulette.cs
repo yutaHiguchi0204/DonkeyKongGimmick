@@ -7,6 +7,15 @@ using DG.Tweening;
 
 public class Roulette : BonusFactory
 {
+    // ルーレットの種類
+    private enum RouletteType
+    {
+        Match,
+        Sort
+    }
+    [SerializeField]
+    private RouletteType _type = RouletteType.Match;
+
     // 配置座標
     [SerializeField]
     private float _posXMin = -3f;
@@ -88,28 +97,72 @@ public class Roulette : BonusFactory
             .ObserveAdd()
             .Subscribe(_ =>
             {
-                // 最初の値を基準とする
-                int correctID = _pickItemIDList[0];
-
-                // 全て一致しているか
-                if (_pickItemIDList.All(id => id == correctID))
+                switch (_type)
                 {
-                    // 選択バレル数チェック
-                    if (_pickItemIDList.Count >= _barrelNum)
-                    {
-                        // 成功
-                        _isCorrected.Value = true;
-                        _isFinished.Value = true;
-                        Corrected();
-                    }
-                    return;
-                }
+                    case RouletteType.Match:
+                        CheckMatch();
+                        break;
 
-                // 失敗
-                _isCorrected.Value = false;
-                _isFinished.Value = true;
-                Failed();
+                    case RouletteType.Sort:
+                        CheckSort();
+                        break;
+
+                    default:
+                        break;
+                }
             });
+    }
+
+    // 全て同じアイテムに合わせる
+    private void CheckMatch()
+    {
+        // 最初の値を基準とする
+        int correctID = _pickItemIDList[0];
+
+        // 全て一致しているか
+        if (_pickItemIDList.All(id => id == correctID))
+        {
+            // 選択バレル数チェック
+            if (_pickItemIDList.Count >= _barrelNum)
+            {
+                // 成功
+                _isCorrected.Value = true;
+                _isFinished.Value = true;
+                Corrected();
+            }
+            return;
+        }
+
+        // 失敗
+        _isCorrected.Value = false;
+        _isFinished.Value = true;
+        Failed();
+    }
+
+    // 登録された順に揃える（バレル数までが当たり）
+    private void CheckSort()
+    {
+        // ピック数
+        int pickNum = _pickItemIDList.Count;
+
+        // 登録順と合っているか
+        if ((int)_itemIDList[pickNum - 1] == _pickItemIDList[pickNum - 1])
+        {
+            // 選択バレル数チェック
+            if (pickNum >= _barrelNum)
+            {
+                // 成功
+                _isCorrected.Value = true;
+                _isFinished.Value = true;
+                Corrected();
+            }
+            return;
+        }
+
+        // 失敗
+        _isCorrected.Value = false;
+        _isFinished.Value = true;
+        Failed();
     }
 
     // 成功
@@ -143,9 +196,7 @@ public class Roulette : BonusFactory
                 Destroy(_rouletteBarrel[i].gameObject);
             }
             Instantiate(_explosion, gatherPos, Quaternion.identity);
-            Item correctItem = Instantiate(_correctItem, gatherPos, _correctItem.transform.localRotation);
-            correctItem.ID = _pickItemIDList[0];
-            correctItem.Initialize();
+            OutCorrectItem(gatherPos);
         });
         seq.Play();
     }
@@ -157,5 +208,28 @@ public class Roulette : BonusFactory
         {
             StartCoroutine(_rouletteBarrel[i].Failed());
         }
+    }
+
+    // アイテム出力
+    private void OutCorrectItem(Vector3 gatherPos)
+    {
+        Item correctItem = Instantiate(_correctItem, gatherPos, _correctItem.transform.localRotation);
+
+        // 出力するアイテムを指定
+        switch (_type)
+        {
+            case RouletteType.Match:
+                correctItem.ID = _pickItemIDList[0];
+                break;
+
+            case RouletteType.Sort:
+                correctItem.ID = (int)ItemName.ItemNameList.BalloonRed;
+                break;
+
+            default:
+                break;
+        }
+
+        correctItem.Initialize();
     }
 }

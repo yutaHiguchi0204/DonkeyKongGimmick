@@ -57,18 +57,18 @@ public class Item : MonoBehaviour
     // 初期化
     public virtual void Initialize()
     {
-        // IDが設定されていなかったらスタート値を設定
-        if (_id == 0)
-        {
-            _id = CommonState.ITEM_ID_START[(int)_selectItemList];
-        }
-
         SetImage();
     }
 
     // 画像設定
     public virtual void SetImage()
     {
+        // IDがNoneなら設定しない
+        if (_id == (int)ItemName.ItemNameList.None)
+        {
+            return;
+        }
+
         _itemList = Resources.Load(ITEM_LIST_PATH[(int)_selectItemList], typeof(ItemList)) as ItemList;
         _itemImage.sprite = _itemList.Get()[_id - CommonState.ITEM_ID_START[(int)_selectItemList]];
     }
