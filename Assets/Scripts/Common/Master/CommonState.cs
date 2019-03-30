@@ -9,6 +9,10 @@ public static class CommonState
     public const string MOVE_RIGHT_KEY = "d";
     public const string JUMP_KEY = "w";
 
+    // 点滅エフェクト
+    public const int BLINK_NUM = 3;
+    public const float BLINK_TIME = 0.3f;
+
     // アイテム関係
     public static readonly int[] ITEM_ID_START =
     {

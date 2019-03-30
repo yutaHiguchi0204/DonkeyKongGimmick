@@ -23,8 +23,8 @@ public class RouletteBarrel : MonoBehaviour
     private List<ItemName.ItemNameList> _itemIDList = new List<ItemName.ItemNameList>();
 
     // アイテムの決定
-    private ReactiveProperty<int> _pickItemID = new ReactiveProperty<int>(-1);
-    public IReactiveProperty<int> PickItemID
+    private ReactiveProperty<ItemName.ItemNameList> _pickItemID = new ReactiveProperty<ItemName.ItemNameList>(ItemName.ItemNameList.None);
+    public IReactiveProperty<ItemName.ItemNameList> PickItemID
     {
         get
         {
@@ -48,20 +48,20 @@ public class RouletteBarrel : MonoBehaviour
         _roulettePlayable = Observable.Interval(TimeSpan.FromSeconds(realInterval))
             .Subscribe(time =>
             {
-                _item.ID = (int)_itemIDList[((int)time + _id) % _itemIDList.Count];
+                _item.ID = _itemIDList[((int)time + _id) % _itemIDList.Count];
                 _item.SetImage();
             });
     }
 
     // アイテム点滅
-    public IEnumerator Blink(int blinkNum, float blinkTime)
+    public IEnumerator Blink()
     {
-        for (int i = 0; i < blinkNum; i++)
+        for (int i = 0; i < CommonState.BLINK_NUM; i++)
         {
             _item.ItemImage.enabled = false;
-            yield return new WaitForSeconds(blinkTime / 2);
+            yield return new WaitForSeconds(CommonState.BLINK_TIME / 2);
             _item.ItemImage.enabled = true;
-            yield return new WaitForSeconds(blinkTime / 2);
+            yield return new WaitForSeconds(CommonState.BLINK_TIME / 2);
         }
     }
 

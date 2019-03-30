@@ -40,7 +40,7 @@ public class Roulette : BonusFactory
     private List<ItemName.ItemNameList> _itemIDList = new List<ItemName.ItemNameList>();
 
     // 選択アイテムのIDリスト
-    private ReactiveCollection<int> _pickItemIDList = new ReactiveCollection<int>();
+    private ReactiveCollection<ItemName.ItemNameList> _pickItemIDList = new ReactiveCollection<ItemName.ItemNameList>();
 
     // 爆発エフェクト
     [SerializeField]
@@ -53,12 +53,6 @@ public class Roulette : BonusFactory
     // 回転インターバル
     [SerializeField]
     private float _realInterval = 0.5f;
-
-    // 点滅回数
-    private int _blinkNum = 3;
-
-    // 点滅時間
-    private float _blinkTime = 0.3f;
 
     // 成功時にバレルが集まる時間
     [SerializeField]
@@ -117,7 +111,7 @@ public class Roulette : BonusFactory
     private void CheckMatch()
     {
         // 最初の値を基準とする
-        int correctID = _pickItemIDList[0];
+        ItemName.ItemNameList correctID = _pickItemIDList[0];
 
         // 全て一致しているか
         if (_pickItemIDList.All(id => id == correctID))
@@ -146,7 +140,7 @@ public class Roulette : BonusFactory
         int pickNum = _pickItemIDList.Count;
 
         // 登録順と合っているか
-        if ((int)_itemIDList[pickNum - 1] == _pickItemIDList[pickNum - 1])
+        if (_itemIDList[pickNum - 1] == _pickItemIDList[pickNum - 1])
         {
             // 選択バレル数チェック
             if (pickNum >= _barrelNum)
@@ -177,10 +171,10 @@ public class Roulette : BonusFactory
         {
             for (int i = 0; i < _barrelNum; i++)
             {
-                StartCoroutine(_rouletteBarrel[i].Blink(_blinkNum, _blinkTime));
+                StartCoroutine(_rouletteBarrel[i].Blink());
             }
         })
-        .AppendInterval(_blinkTime * _blinkNum)
+        .AppendInterval(CommonState.BLINK_NUM * CommonState.BLINK_TIME)
         .AppendCallback(() =>
         {
             for (int i = 0; i < _barrelNum; i++)
@@ -223,7 +217,7 @@ public class Roulette : BonusFactory
                 break;
 
             case RouletteType.Sort:
-                correctItem.ID = (int)ItemName.ItemNameList.BalloonRed;
+                correctItem.ID = ItemName.ItemNameList.BalloonRed;
                 break;
 
             default:
