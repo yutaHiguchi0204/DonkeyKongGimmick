@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 15
-  productGUID: fab55c2b8c9eb46e8b1a94dd74b4b11d
+  productGUID: 00000000000000000000000000000000
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -728,7 +728,7 @@ PlayerSettings:
   facebookSdkVersion: 7.9.1
   apiCompatibilityLevel: 2
   cloudProjectId: 0f3776bc-a444-441d-9dba-46e4e40804bb
-  projectName: DonkeyKongGimmick
+  projectName: EffectsExamples
   organizationId: hyp_yuyu
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0

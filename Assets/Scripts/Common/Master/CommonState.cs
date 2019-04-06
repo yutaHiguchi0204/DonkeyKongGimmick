@@ -5,9 +5,9 @@ using UnityEngine;
 public static class CommonState
 {
     // キー関係
-    public const string MOVE_LEFT_KEY = "a";
-    public const string MOVE_RIGHT_KEY = "d";
-    public const string JUMP_KEY = "w";
+    public const KeyCode MOVE_LEFT_KEY = KeyCode.A;
+    public const KeyCode MOVE_RIGHT_KEY = KeyCode.D;
+    public const KeyCode JUMP_KEY = KeyCode.W;
 
     // 点滅エフェクト
     public const int BLINK_NUM = 3;

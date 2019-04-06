@@ -44,19 +44,19 @@ public class Player : MonoBehaviour
     // 移動処理
     public void Move(string moveKey)
     {
-        Quaternion quaternion = transform.localRotation;
-        if (moveKey == CommonState.MOVE_LEFT_KEY)
-        {
-            _rigidbody.velocity = new Vector3(MOVE_DISTANCE, 0f, 0f);
-            quaternion.y = -90f;
-        }
-        else if (moveKey == CommonState.MOVE_RIGHT_KEY)
-        {
-            _rigidbody.velocity += new Vector3(MOVE_DISTANCE, 0f, 0f);
-            quaternion.y = 90f;
-        }
-        transform.localRotation = quaternion;
-        _animator.SetBool("walk", true);
+        //Quaternion quaternion = transform.localRotation;
+        //if (moveKey == CommonState.MOVE_LEFT_KEY)
+        //{
+        //    _rigidbody.velocity = new Vector3(MOVE_DISTANCE, 0f, 0f);
+        //    quaternion.y = -90f;
+        //}
+        //else if (moveKey == CommonState.MOVE_RIGHT_KEY)
+        //{
+        //    _rigidbody.velocity += new Vector3(MOVE_DISTANCE, 0f, 0f);
+        //    quaternion.y = 90f;
+        //}
+        //transform.localRotation = quaternion;
+        //_animator.SetBool("walk", true);
     }
 
     // ジャンプ処理
