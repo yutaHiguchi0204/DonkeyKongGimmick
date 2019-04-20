@@ -616,7 +616,7 @@ PlayerSettings:
     4: CROSS_PLATFORM_INPUT;MOBILE_INPUT;UNITY_POST_PROCESSING_STACK_V2
     7: CROSS_PLATFORM_INPUT;MOBILE_INPUT;UNITY_POST_PROCESSING_STACK_V2
     13: UNITY_POST_PROCESSING_STACK_V2
-    14: MOBILE_INPUT
+    14: MOBILE_INPUT;UNITY_POST_PROCESSING_STACK_V2
     15: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     16: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     17: MOBILE_INPUT;UNITY_POST_PROCESSING_STACK_V2
@@ -646,7 +646,7 @@ PlayerSettings:
     tvOS: 0
   allowUnsafeCode: 0
   additionalIl2CppArgs: 
-  scriptingRuntimeVersion: 0
+  scriptingRuntimeVersion: 1
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
@@ -726,7 +726,7 @@ PlayerSettings:
     UNet: 1
     Unity_Ads: 0
   facebookSdkVersion: 7.9.1
-  apiCompatibilityLevel: 2
+  apiCompatibilityLevel: 3
   cloudProjectId: 0f3776bc-a444-441d-9dba-46e4e40804bb
   projectName: DonkeyKongGimmick
   organizationId: hyp_yuyu

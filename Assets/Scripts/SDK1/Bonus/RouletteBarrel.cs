@@ -42,7 +42,7 @@ public class RouletteBarrel : MonoBehaviour
     {
         _id = id;
         _itemIDList = itemIDList;
-        _item.Initialize();
+        _item.SetImage();
 
         // ルーレット作動
         _roulettePlayable = Observable.Interval(TimeSpan.FromSeconds(realInterval))
@@ -51,18 +51,6 @@ public class RouletteBarrel : MonoBehaviour
                 _item.ID = _itemIDList[((int)time + _id) % _itemIDList.Count];
                 _item.SetImage();
             });
-    }
-
-    // アイテム点滅
-    public IEnumerator Blink()
-    {
-        for (int i = 0; i < CommonState.BLINK_NUM; i++)
-        {
-            _item.ItemImage.enabled = false;
-            yield return new WaitForSeconds(CommonState.BLINK_TIME / 2);
-            _item.ItemImage.enabled = true;
-            yield return new WaitForSeconds(CommonState.BLINK_TIME / 2);
-        }
     }
 
     // 失敗時

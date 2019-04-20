@@ -16,7 +16,12 @@ public class ItemName : MonoBehaviour
         BalloonRed,
         BalloonGreen,
         BalloonBlue,
+		BonusCoin,
+		// <-- SDK1 -->
         SDK1Tmp = 100,
-        SDK2Tmp = 200
+		// <-- SDK2 -->
+        SDK2Tmp = 200,
+		// <-- SDK3 -->
+		BananaGreen = 300
     }
 }

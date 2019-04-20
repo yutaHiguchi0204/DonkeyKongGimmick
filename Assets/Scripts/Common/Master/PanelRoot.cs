@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class PanelRoot : MonoBehaviour
+public class PanelRoot : IPanel
 {
     protected const float MOVE_TIME = 0.5f;
 
@@ -15,12 +15,12 @@ public class PanelRoot : MonoBehaviour
     [SerializeField]
     protected Image _item2D;
 
-    protected virtual void Start()
-    {
-        this.enabled = false;
-    }
+	public override void Initialize()
+	{
+		this.enabled = false;
+	}
 
-    public virtual void GetItem(Item item)
+	public virtual void GetItem(Item item)
     {
         // スクリーン座標変換
         Vector3 screenPos = Camera.main.WorldToScreenPoint(item.transform.position);
@@ -31,7 +31,7 @@ public class PanelRoot : MonoBehaviour
         // 2Dアイテム生成
         Image item2D = Instantiate(_item2D, screenPos, Quaternion.identity);
         item2D.rectTransform.SetParent(_canvas.transform, false);
-        item2D.sprite = item.ItemList.Get()[(int)item.ID - CommonState.ITEM_ID_START[(int)item.CurrentSelectItemList]];
+        item2D.sprite = item.ItemList.Get()[(int)item.ID - CommonState.ITEM_ID_START[(int)item.SelectTitle]];
 
         GetAnimation(item2D);
     }
@@ -41,7 +41,7 @@ public class PanelRoot : MonoBehaviour
         item2D.rectTransform.DOMove(transform.position, MOVE_TIME)
             .OnComplete(() =>
             {
-                Destroy(item2D);
+                Destroy(item2D.gameObject);
             });
     }
 }
