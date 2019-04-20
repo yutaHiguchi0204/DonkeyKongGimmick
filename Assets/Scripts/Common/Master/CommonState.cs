@@ -13,11 +13,21 @@ public static class CommonState
     public const int BLINK_NUM = 3;
     public const float BLINK_TIME = 0.3f;
 
+	// タイトル
+	public enum GameTitle
+	{
+		Common,
+		SDK1,
+		SDK2,
+		SDK3
+	}
+
     // アイテム関係
     public static readonly int[] ITEM_ID_START =
     {
         1,
         100,
-        200
+        200,
+		300
     };
 }

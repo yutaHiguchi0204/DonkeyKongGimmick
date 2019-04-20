@@ -171,7 +171,7 @@ public class Roulette : BonusFactory
         {
             for (int i = 0; i < _barrelNum; i++)
             {
-                StartCoroutine(_rouletteBarrel[i].Blink());
+                StartCoroutine(_rouletteBarrel[i].BarrelItem.Blink());
             }
         })
         .AppendInterval(CommonState.BLINK_NUM * CommonState.BLINK_TIME)
@@ -224,6 +224,6 @@ public class Roulette : BonusFactory
                 break;
         }
 
-        correctItem.Initialize();
+        correctItem.SetImage();
     }
 }

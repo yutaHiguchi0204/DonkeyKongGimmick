@@ -1,20 +1,26 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
-using UnityEngine.UI;
+using UniRx;
 using DG.Tweening;
 
-public class Item : MonoBehaviour
+public class Item : IObject
 {
-    private static readonly string[] ITEM_LIST_PATH = 
+    protected static readonly string[] ITEM_LIST_PATH =
     {
         "Common/CommonItemList",
         "SDK1/SDK1ItemList",
-        "SDK2/SDK2ItemList"
+        "SDK2/SDK2ItemList",
+        "SDK3/SDK3ItemList"
     };
 
     // 回転速度
-    private const float ROTATE_TIME = 1f;
+    protected const float ROTATE_TIME = 1f;
+
+    // 点滅までの時間
+    public const float DISAPPEAR_START_TIME = 2f;
 
     [SerializeField]
     protected ItemName.ItemNameList _id = ItemName.ItemNameList.None;
@@ -30,19 +36,13 @@ public class Item : MonoBehaviour
         }
     }
 
-    public enum SelectItemList
-    {
-        Common,
-        SDK1,
-        SDK2
-    }
     [SerializeField]
-    protected SelectItemList _selectItemList = SelectItemList.Common;
-    public SelectItemList CurrentSelectItemList
+    protected CommonState.GameTitle _selectTitle = CommonState.GameTitle.Common;
+    public CommonState.GameTitle SelectTitle
     {
         get
         {
-            return _selectItemList;
+            return _selectTitle;
         }
     }
 
@@ -69,36 +69,80 @@ public class Item : MonoBehaviour
     // 回転させるかどうか
     [SerializeField]
     private bool _isRotation = false;
+	public bool IsRotation
+	{
+		get
+		{
+			return _isRotation;
+		}
+		set
+		{
+			_isRotation = value;
+		}
+	}
+
+    [SerializeField]
+    protected bool _isDisappearing = false;
+	public bool IsDisappearing
+	{
+		get
+		{
+			return _isDisappearing;
+		}
+		set
+		{
+			_isDisappearing = value;
+		}
+	}
 
     private Tween _rotateTween;
+
+	[SerializeField]
+	private AwaitTriggerExtensions _awaitExt;
 
     // 取得時の移動先
     [SerializeField]
     private PanelRoot _onClickAfterParent;
 
-    private void Start()
+    public override async void Initialize()
     {
-        _itemList = Resources.Load(ITEM_LIST_PATH[(int)_selectItemList], typeof(ItemList)) as ItemList;
+		CheckTitle();
+        _itemList = Resources.Load(ITEM_LIST_PATH[(int)_selectTitle], typeof(ItemList)) as ItemList;
 
-        if (_isRotation)
+		// IDが設定してあれば初期化
+		if (_id != (int)ItemName.ItemNameList.None)
+		{
+			SetImage();
+		}
+
+		// 回転
+		if (_isRotation)
         {
             _rotateTween = _itemImage.transform.DOLocalRotate(new Vector3(0f, 360f, 0f), ROTATE_TIME, RotateMode.FastBeyond360)
                 .SetLoops(-1)
                 .SetEase(Ease.Linear);
         }
 
-        // IDが設定してあれば初期化
-        if (_id != (int)ItemName.ItemNameList.None)
+		// 時間経過で消滅
+        if (_isDisappearing)
         {
-            Initialize();
+			await _awaitExt.CancelableAsync(WaitForDisappearStart(async () =>
+			{
+				await _awaitExt.CancelableAsync(Blink(() =>
+				{
+					Destroy(this.gameObject);
+				}));
+			}));
         }
     }
-
-    // 初期化
-    public virtual void Initialize()
-    {
-        SetImage();
-    }
+	
+	public void Initialize(ItemName.ItemNameList id, bool isRotation = false, bool isDisappearing = false)
+	{
+		_id = id;
+		_isRotation = isRotation;
+		_isDisappearing = isDisappearing;
+		Initialize();
+	}
 
     // 画像設定
     public virtual void SetImage()
@@ -109,10 +153,35 @@ public class Item : MonoBehaviour
             return;
         }
 
-        _itemImage.sprite = _itemList.Get()[(int)_id - CommonState.ITEM_ID_START[(int)_selectItemList]];
+		CheckTitle();
+        _itemImage.sprite = _itemList.Get()[(int)_id - CommonState.ITEM_ID_START[(int)_selectTitle]];
     }
 
-    // アイテム取得
+	// ボーナス用設定
+	public virtual void SetBonus(ItemName.ItemNameList id, PanelRoot panel, bool isRotation = true, bool isDisappearing = true)
+	{
+		ID = id;
+		_isRotation = isRotation;
+		_isDisappearing = isDisappearing;
+
+		_onClickAfterParent = panel;
+
+		Initialize();
+		SetImage();
+	}
+
+    // 点滅
+    public IEnumerator Blink(Action action = null)
+    {
+        for (int i = 0; i < CommonState.BLINK_NUM; i++)
+        {
+            _itemImage.enabled = false;
+            yield return new WaitForSeconds(CommonState.BLINK_TIME / 2);
+            _itemImage.enabled = true;
+            yield return new WaitForSeconds(CommonState.BLINK_TIME / 2);
+			action?.Invoke();
+        }
+    }
 
     public virtual void OnClick()
     {
@@ -125,4 +194,22 @@ public class Item : MonoBehaviour
 
         Destroy(this.gameObject);
     }
+
+    // 待機処理
+    protected IEnumerator WaitForDisappearStart(Action action = null)
+    {
+        yield return new WaitForSeconds(DISAPPEAR_START_TIME);
+		action?.Invoke();
+    }
+
+	// タイトルチェック
+	protected CommonState.GameTitle CheckTitle()
+	{
+		if (_selectTitle == CommonState.GameTitle.Common && (int)_id >= CommonState.ITEM_ID_START[(int)CommonState.GameTitle.SDK1])
+		{
+			_selectTitle = (CommonState.GameTitle)((int)_id / CommonState.ITEM_ID_START[(int)CommonState.GameTitle.SDK1]);
+		}
+
+		return _selectTitle;
+	}
 }
